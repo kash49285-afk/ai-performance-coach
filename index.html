@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+    
 <title>AI Performance Coach</title>
 <style>
 body {
@@ -47,11 +51,53 @@ video {
   <h2>Ready to train</h2>
   <button onclick="startCamera()">Start Training</button>
 </div>
+  <button onclick="saveAndStart()">Start Training</button>
 
 <video id="video" width="640" height="480" autoplay style="display:none;"></video>
+  <canvas id="canvas" width="640" height="480"></canvas>
 
 <script>
+  <script>
+function saveAndStart() {
 
+  window.open(https://docs.google.com/forms/d/e/1FAIpQLSeIr9msPJKmi9awY8HfLdh3BwieWiBH0eCVehuaXNUXarowsg/viewform?usp=header);
+
+  startCamera();
+
+}
+</script>
+const videoElement = document.getElementById('video');
+const canvasElement = document.getElementById('canvas');
+const canvasCtx = canvasElement.getContext('2d');
+
+const pose = new Pose({
+  locateFile: (file) => {
+    return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
+  }
+});
+
+pose.setOptions({
+  modelComplexity: 1,
+  smoothLandmarks: true,
+  enableSegmentation: false,
+  minDetectionConfidence: 0.5,
+  minTrackingConfidence: 0.5
+});
+
+pose.onResults(results => {
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+});
+
+const camera = new Camera(videoElement, {
+  onFrame: async () => {
+    await pose.send({image: videoElement});
+  },
+  width: 640,
+  height: 480
+});
+
+camera.start();
 let form = "";
 let goal = "";
 
