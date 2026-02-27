@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Performance Coach</title>
+<style>
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #0f172a;
+  color: white;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 18px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+video {
+  margin-top: 20px;
+  border: 3px solid white;
+}
+</style>
+</head>
+
+<body>
+
+<h1>AI Performance Coach</h1>
+
+<div id="step1">
+  <h2>Select your training form</h2>
+  <button onclick="selectForm('K-pop')">K-pop</button>
+  <button onclick="selectForm('Hip-hop')">Hip-hop</button>
+  <button onclick="selectForm('Bharatanatyam')">Bharatanatyam</button>
+  <button onclick="selectForm('Vocals')">Vocals</button>
+</div>
+
+<div id="step2" style="display:none;">
+  <h2>Select your goal</h2>
+  <button onclick="selectGoal('Beginner')">Beginner</button>
+  <button onclick="selectGoal('Technique')">Improve Technique</button>
+  <button onclick="selectGoal('Audition')">Audition Prep</button>
+</div>
+
+<div id="step3" style="display:none;">
+  <h2>Ready to train</h2>
+  <button onclick="startCamera()">Start Training</button>
+</div>
+
+<video id="video" width="640" height="480" autoplay style="display:none;"></video>
+
+<script>
+
+let form = "";
+let goal = "";
+
+function selectForm(selected) {
+  form = selected;
+  document.getElementById("step1").style.display = "none";
+  document.getElementById("step2").style.display = "block";
+}
+
+function selectGoal(selected) {
+  goal = selected;
+  document.getElementById("step2").style.display = "none";
+  document.getElementById("step3").style.display = "block";
+}
+
+function startCamera() {
+
+  document.getElementById("video").style.display = "block";
+
+  navigator.mediaDevices.getUserMedia({ video: true })
+  .then(function(stream) {
+    document.getElementById("video").srcObject = stream;
+  })
+  .catch(function(error) {
+    alert("Camera access denied");
+  });
+
+}
+
+</script>
+
+</body>
+</html>
