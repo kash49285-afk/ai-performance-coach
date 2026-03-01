@@ -1,129 +1,269 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
-    
 <title>AI Performance Coach</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
+
 body {
-  font-family: Arial;
-  text-align: center;
-  background: #0f172a;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(-45deg, #0f172a, #1e3a8a, #0f172a, #312e81);
+  background-size: 400% 400%;
+  animation: gradientMove 12s ease infinite;
   color: white;
+  overflow: hidden;
+}
+
+@keyframes gradientMove {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+.centerScreen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+}
+
+h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
 }
 
 button {
   padding: 15px 30px;
   font-size: 18px;
   margin: 10px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
   cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: 0.3s;
 }
 
-video {
-  margin-top: 20px;
-  border: 3px solid white;
+button:hover {
+  transform: scale(1.1);
+  background: rgba(37,99,235,0.6);
+  box-shadow: 0 0 20px #3b82f6;
 }
+
+#trainingScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background: black;
+}
+
+video, canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#aiPanel {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 300px;
+  padding: 20px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.fadeOut {
+  opacity: 0;
+  pointer-events: none;
+}
+
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+
 </head>
 
 <body>
 
+<div id="menuScreen" class="centerScreen">
+
 <h1>AI Performance Coach</h1>
 
 <div id="step1">
-  <h2>Select your training form</h2>
-  <button onclick="selectForm('K-pop')">K-pop</button>
-  <button onclick="selectForm('Hip-hop')">Hip-hop</button>
-  <button onclick="selectForm('Bharatanatyam')">Bharatanatyam</button>
-  <button onclick="selectForm('Vocals')">Vocals</button>
+<h2>Select training form</h2>
+
+<button onclick="selectForm('K-pop')">K-pop</button>
+<button onclick="selectForm('Hip-hop')">Hip-hop</button>
+<button onclick="selectForm('Bharatanatyam')">Bharatanatyam</button>
+<button onclick="selectForm('Vocals')">Vocals</button>
+
 </div>
 
 <div id="step2" style="display:none;">
-  <h2>Select your goal</h2>
-  <button onclick="selectGoal('Beginner')">Beginner</button>
-  <button onclick="selectGoal('Technique')">Improve Technique</button>
-  <button onclick="selectGoal('Audition')">Audition Prep</button>
+
+<h2>Select your goal</h2>
+
+<button onclick="selectGoal('Beginner')">Beginner</button>
+<button onclick="selectGoal('Technique')">Technique</button>
+<button onclick="selectGoal('Audition')">Audition</button>
+
 </div>
 
 <div id="step3" style="display:none;">
-  <h2>Ready to train</h2>
-  <button onclick="startCamera()">Start Training</button>
-</div>
-  <button onclick="saveAndStart()">Start Training</button>
 
-<video id="video" width="640" height="480" autoplay style="display:none;"></video>
-  <canvas id="canvas" width="640" height="480"></canvas>
+<h2>Ready</h2>
+
+<button onclick="enterTraining()">ENTER TRAINING</button>
+
+</div>
+
+</div>
+
+
+<div id="trainingScreen">
+
+<video id="video" autoplay muted></video>
+<canvas id="canvas"></canvas>
+
+<div id="aiPanel">
+
+<h3>AI Coach</h3>
+
+<div id="status">
+Observing movement...
+</div>
+
+</div>
+
+</div>
+
 
 <script>
-  <script>
-function saveAndStart() {
 
-  window.open(https://docs.google.com/forms/d/e/1FAIpQLSeIr9msPJKmi9awY8HfLdh3BwieWiBH0eCVehuaXNUXarowsg/viewform?usp=header);
+let selectedForm = "";
+let selectedGoal = "";
 
-  startCamera();
+function selectForm(form) {
+
+selectedForm = form;
+
+document.getElementById("step1").style.display = "none";
+document.getElementById("step2").style.display = "block";
 
 }
-</script>
-const videoElement = document.getElementById('video');
+
+function selectGoal(goal) {
+
+selectedGoal = goal;
+
+document.getElementById("step2").style.display = "none";
+document.getElementById("step3").style.display = "block";
+
+}
+
+function enterTraining(){
+
+localStorage.setItem("form", selectedForm);
+localStorage.setItem("goal", selectedGoal);
+
+document.getElementById("menuScreen").classList.add("fadeOut");
+
+setTimeout(() => {
+
+document.getElementById("menuScreen").style.display = "none";
+document.getElementById("trainingScreen").style.display = "block";
+
+startCamera();
+startPose();
+
+},500);
+
+}
+
+
+function startCamera(){
+
+navigator.mediaDevices.getUserMedia({video:true})
+
+.then(stream => {
+
+video.srcObject = stream;
+
+})
+
+.catch(() => {
+
+alert("Camera access required");
+
+});
+
+}
+
+
+
+function startPose(){
+
 const canvasElement = document.getElementById('canvas');
 const canvasCtx = canvasElement.getContext('2d');
 
 const pose = new Pose({
-  locateFile: (file) => {
-    return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
-  }
+
+locateFile: file =>
+`https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
+
 });
 
 pose.setOptions({
-  modelComplexity: 1,
-  smoothLandmarks: true,
-  enableSegmentation: false,
-  minDetectionConfidence: 0.5,
-  minTrackingConfidence: 0.5
+
+modelComplexity:1,
+smoothLandmarks:true,
+minDetectionConfidence:0.5,
+minTrackingConfidence:0.5
+
 });
+
 
 pose.onResults(results => {
-  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-  canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+canvasElement.width = video.videoWidth;
+canvasElement.height = video.videoHeight;
+
+canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
+
+canvasCtx.drawImage(results.image,0,0,
+canvasElement.width,canvasElement.height);
+
 });
 
-const camera = new Camera(videoElement, {
-  onFrame: async () => {
-    await pose.send({image: videoElement});
-  },
-  width: 640,
-  height: 480
+
+const camera = new Camera(video,{
+
+onFrame: async ()=>{
+
+await pose.send({image:video});
+
+},
+
+width:1280,
+height:720
+
 });
 
 camera.start();
-let form = "";
-let goal = "";
-
-function selectForm(selected) {
-  form = selected;
-  document.getElementById("step1").style.display = "none";
-  document.getElementById("step2").style.display = "block";
-}
-
-function selectGoal(selected) {
-  goal = selected;
-  document.getElementById("step2").style.display = "none";
-  document.getElementById("step3").style.display = "block";
-}
-
-function startCamera() {
-
-  document.getElementById("video").style.display = "block";
-
-  navigator.mediaDevices.getUserMedia({ video: true })
-  .then(function(stream) {
-    document.getElementById("video").srcObject = stream;
-  })
-  .catch(function(error) {
-    alert("Camera access denied");
-  });
 
 }
 
