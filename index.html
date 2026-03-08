@@ -247,6 +247,428 @@ canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
 canvasCtx.drawImage(results.image,0,0,
 canvasElement.width,canvasElement.height);
 
+
+// Detect movement level
+
+if(results.poseLandmarks){
+
+let leftWrist = results.poseLandmarks[15];
+let rightWrist = results.poseLandmarks[16];
+
+let movementScore =
+Math.abs(leftWrist.x - rightWrist.x) +
+Math.abs(leftWrist.y - rightWrist.y);
+
+if(movementScore > 0.2){
+
+document.getElementById("status").innerHTML =
+"Good, you're moving. Keep going.";
+
+}else{
+
+document.getElementById("status").innerHTML =
+"Move more so I can analyze your technique.";
+
+}
+
+}
+
+});pose.onResults(results => {
+
+canvasElement.width = video.videoWidth;
+canvasElement.height = video.videoHeight;
+
+canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
+
+canvasCtx.drawImage(results.image,0,0,
+canvasElement.width,canvasElement.height);
+
+
+// Detect movement level
+
+if(results.poseLandmarks){
+
+let leftWrist = results.poseLandmarks[15];
+let rightWrist = results.poseLandmarks[16];
+
+let movementScore =
+Math.abs(leftWrist.x - rightWrist.x) +
+Math.abs(leftWrist.y - rightWrist.y);
+
+if(movementScore > 0.2){
+
+document.getElementById("status").innerHTML =
+"Good, you're moving. Keep going.";
+
+}else{
+
+document.getElementById("status").innerHTML =
+"Move more so I can analyze your technique.";
+
+}
+
+}
+
+});pose.onResults(results => {
+
+canvasElement.width = video.videoWidth;
+canvasElement.height = video.videoHeight;
+
+canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
+
+canvasCtx.drawImage(results.image,0,0,
+canvasElement.width,canvasElement.height);
+
+
+// Detect movement level
+
+if(results.poseLandmarks){
+
+let leftWrist = results.poseLandmarks[15];
+let rightWrist = results.poseLandmarks[16];
+
+let movementScore =
+Math.abs(leftWrist.x - rightWrist.x) +
+Math.abs(leftWrist.y - rightWrist.y);
+
+if(movementScore > 0.2){
+
+document.getElementById("status").innerHTML =
+"Good, you're moving. Keep going.";
+
+}else{
+
+document.getElementById("status").innerHTML =
+"Move more so I can analyze your technique.";
+
+}
+
+}
+
+});pose.onResults(results => {
+
+canvasElement.width = video.videoWidth;
+canvasElement.height = video.videoHeight;
+
+canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
+
+canvasCtx.drawImage(results.image,0,0,
+canvasElement.width,canvasElement.height);
+
+
+// Detect movement level
+
+if(results.poseLandmarks){
+
+let leftWrist = results.poseLandmarks[15];
+let rightWrist = results.poseLandmarks[16];
+
+let movementScore =
+Math.abs(leftWrist.x - rightWrist.x) +
+Math.abs(leftWrist.y - rightWrist.y);
+
+if(movementScore > 0.2){
+
+document.getElementById("status").innerHTML =
+"Good, you're moving. Keep going.";
+
+}else{
+
+document.getElementById("status").innerHTML =
+"Move more so I can analyze your technique.";
+
+}
+
+}
+
+});pose.onResults(results => {
+
+canvasElement.width = video.videoWidth;
+canvasElement.height = video.videoHeight;
+
+canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
+
+canvasCtx.drawImage(results.image,0,0,
+canvasElement.width,canvasElement.height);
+
+
+// Detect movement level
+
+if(results.poseLandmarks){
+
+let leftWrist = results.poseLandmarks[15];
+let rightWrist = results.poseLandmarks[16];
+
+let movementScore =
+Math.abs(leftWrist.x - rightWrist.x) +
+Math.abs(leftWrist.y - rightWrist.y);
+
+if(movementScore > 0.2){
+
+document.getElementById("status").innerHTML =
+"Good, you're moving. Keep going.";
+
+}else{
+
+document.getElementById("status").innerHTML =
+"Move more so I can analyze your technique.";
+
+}
+
+}
+
+});pose.onResults(results => {
+
+canvasElement.width = video.videoWidth;
+canvasElement.height = video.videoHeight;
+
+canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
+
+canvasCtx.drawImage(results.image,0,0,
+canvasElement.width,canvasElement.height);
+
+
+// Detect movement level
+
+if(results.poseLandmarks){
+
+let leftWrist = results.poseLandmarks[15];
+let rightWrist = results.poseLandmarks[16];
+
+let movementScore =
+Math.abs(leftWrist.x - rightWrist.x) +
+Math.abs(leftWrist.y - rightWrist.y);
+
+if(movementScore > 0.2){
+
+document.getElementById("status").innerHTML =
+"Good, you're moving. Keep going.";
+
+}else{
+
+document.getElementById("status").innerHTML =
+"Move more so I can analyze your technique.";
+
+}
+
+}
+
+});pose.onResults(results => {
+
+canvasElement.width = video.videoWidth;
+canvasElement.height = video.videoHeight;
+
+canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
+
+canvasCtx.drawImage(results.image,0,0,
+canvasElement.width,canvasElement.height);
+
+
+// Detect movement level
+
+if(results.poseLandmarks){
+
+let leftWrist = results.poseLandmarks[15];
+let rightWrist = results.poseLandmarks[16];
+
+let movementScore =
+Math.abs(leftWrist.x - rightWrist.x) +
+Math.abs(leftWrist.y - rightWrist.y);
+
+if(movementScore > 0.2){
+
+document.getElementById("status").innerHTML =
+"Good, you're moving. Keep going.";
+
+}else{
+
+document.getElementById("status").innerHTML =
+"Move more so I can analyze your technique.";
+
+}
+
+}
+
+});pose.onResults(results => {
+
+canvasElement.width = video.videoWidth;
+canvasElement.height = video.videoHeight;
+
+canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
+
+canvasCtx.drawImage(results.image,0,0,
+canvasElement.width,canvasElement.height);
+
+
+// Detect movement level
+
+if(results.poseLandmarks){
+
+let leftWrist = results.poseLandmarks[15];
+let rightWrist = results.poseLandmarks[16];
+
+let movementScore =
+Math.abs(leftWrist.x - rightWrist.x) +
+Math.abs(leftWrist.y - rightWrist.y);
+
+if(movementScore > 0.2){
+
+document.getElementById("status").innerHTML =
+"Good, you're moving. Keep going.";
+
+}else{
+
+document.getElementById("status").innerHTML =
+"Move more so I can analyze your technique.";
+
+}
+
+}
+
+});pose.onResults(results => {
+
+canvasElement.width = video.videoWidth;
+canvasElement.height = video.videoHeight;
+
+canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
+
+canvasCtx.drawImage(results.image,0,0,
+canvasElement.width,canvasElement.height);
+
+
+// Detect movement level
+
+if(results.poseLandmarks){
+
+let leftWrist = results.poseLandmarks[15];
+let rightWrist = results.poseLandmarks[16];
+
+let movementScore =
+Math.abs(leftWrist.x - rightWrist.x) +
+Math.abs(leftWrist.y - rightWrist.y);
+
+if(movementScore > 0.2){
+
+document.getElementById("status").innerHTML =
+"Good, you're moving. Keep going.";
+
+}else{
+
+document.getElementById("status").innerHTML =
+"Move more so I can analyze your technique.";
+
+}
+
+}
+
+});pose.onResults(results => {
+
+canvasElement.width = video.videoWidth;
+canvasElement.height = video.videoHeight;
+
+canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
+
+canvasCtx.drawImage(results.image,0,0,
+canvasElement.width,canvasElement.height);
+
+
+// Detect movement level
+
+if(results.poseLandmarks){
+
+let leftWrist = results.poseLandmarks[15];
+let rightWrist = results.poseLandmarks[16];
+
+let movementScore =
+Math.abs(leftWrist.x - rightWrist.x) +
+Math.abs(leftWrist.y - rightWrist.y);
+
+if(movementScore > 0.2){
+
+document.getElementById("status").innerHTML =
+"Good, you're moving. Keep going.";
+
+}else{
+
+document.getElementById("status").innerHTML =
+"Move more so I can analyze your technique.";
+
+}
+
+}
+
+});pose.onResults(results => {
+
+canvasElement.width = video.videoWidth;
+canvasElement.height = video.videoHeight;
+
+canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
+
+canvasCtx.drawImage(results.image,0,0,
+canvasElement.width,canvasElement.height);
+
+
+// Detect movement level
+
+if(results.poseLandmarks){
+
+let leftWrist = results.poseLandmarks[15];
+let rightWrist = results.poseLandmarks[16];
+
+let movementScore =
+Math.abs(leftWrist.x - rightWrist.x) +
+Math.abs(leftWrist.y - rightWrist.y);
+
+if(movementScore > 0.2){
+
+document.getElementById("status").innerHTML =
+"Good, you're moving. Keep going.";
+
+}else{
+
+document.getElementById("status").innerHTML =
+"Move more so I can analyze your technique.";
+
+}
+
+}
+
+});pose.onResults(results => {
+
+canvasElement.width = video.videoWidth;
+canvasElement.height = video.videoHeight;
+
+canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
+
+canvasCtx.drawImage(results.image,0,0,
+canvasElement.width,canvasElement.height);
+
+
+// Detect movement level
+
+if(results.poseLandmarks){
+
+let leftWrist = results.poseLandmarks[15];
+let rightWrist = results.poseLandmarks[16];
+
+let movementScore =
+Math.abs(leftWrist.x - rightWrist.x) +
+Math.abs(leftWrist.y - rightWrist.y);
+
+if(movementScore > 0.2){
+
+document.getElementById("status").innerHTML =
+"Good, you're moving. Keep going.";
+
+}else{
+
+document.getElementById("status").innerHTML =
+"Move more so I can analyze your technique.";
+
+}
+
+}
+
 });
 
 
