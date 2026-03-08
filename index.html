@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>AI Performance Coach</title>
-
+let sessionStartTime = Date.now();
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -238,7 +238,9 @@ minTrackingConfidence:0.5
 
 
 pose.onResults(results => {
+let sessionLength = Math.floor((Date.now() - sessionStartTime)/1000);
 
+localStorage.setItem("lastSessionLength", sessionLength);
 canvasElement.width = video.videoWidth;
 canvasElement.height = video.videoHeight;
 
@@ -246,7 +248,22 @@ canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
 
 canvasCtx.drawImage(results.image,0,0,
 canvasElement.width,canvasElement.height);
+if (results.poseLandmarks) {
 
+  drawConnectors(
+    canvasCtx,
+    results.poseLandmarks,
+    POSE_CONNECTIONS,
+    {color: '#00FFCC', lineWidth: 4}
+  );
+
+  drawLandmarks(
+    canvasCtx,
+    results.poseLandmarks,
+    {color: '#FF0000', lineWidth: 2}
+  );
+
+}
 
 // Detect movement level
 
