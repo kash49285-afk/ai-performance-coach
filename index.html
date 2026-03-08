@@ -262,7 +262,22 @@ if (results.poseLandmarks) {
     results.poseLandmarks,
     {color: '#FF0000', lineWidth: 2}
   );
+let leftShoulder = results.poseLandmarks[11];
+let rightShoulder = results.poseLandmarks[12];
 
+let shoulderTilt = Math.abs(leftShoulder.y - rightShoulder.y);
+
+if (shoulderTilt > 0.05) {
+
+  document.getElementById("status").innerHTML =
+  "Try keeping your shoulders level.";
+
+} else {
+
+  document.getElementById("status").innerHTML =
+  "Good posture. Keep training.";
+
+}
 }
 
 // Detect movement level
