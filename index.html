@@ -1,92 +1,110 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
 <title>AI Performance Coach</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(-45deg, #0f172a, #1e3a8a, #0f172a, #312e81);
-  background-size: 400% 400%;
-  animation: gradientMove 12s ease infinite;
-  color: white;
-  overflow: hidden;
+body{
+margin:0;
+font-family:Segoe UI;
+background:linear-gradient(135deg,#0f172a,#1e3a8a,#020617);
+color:white;
+overflow:hidden;
 }
 
-@keyframes gradientMove {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
+.center{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:100vh;
+text-align:center;
 }
 
-.centerScreen {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: 0.5s;
+h1{
+font-size:48px;
+margin-bottom:10px;
 }
 
-h1 {
-  font-size: 3em;
-  margin-bottom: 10px;
+button{
+padding:14px 28px;
+margin:10px;
+font-size:16px;
+border-radius:10px;
+border:none;
+background:#3b82f6;
+color:white;
+cursor:pointer;
+transition:0.2s;
 }
 
-button {
-  padding: 15px 30px;
-  font-size: 18px;
-  margin: 10px;
-  border-radius: 12px;
-  border: none;
-  background: rgba(255,255,255,0.1);
-  color: white;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  transition: 0.3s;
+button:hover{
+transform:scale(1.08);
+background:#2563eb;
 }
 
-button:hover {
-  transform: scale(1.1);
-  background: rgba(37,99,235,0.6);
-  box-shadow: 0 0 20px #3b82f6;
+input,textarea{
+padding:10px;
+margin:6px;
+border-radius:8px;
+border:none;
+width:260px;
 }
 
-#trainingScreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: none;
-  background: black;
+#training{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:none;
+background:black;
 }
 
-video, canvas {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+video,canvas{
+position:absolute;
+width:100%;
+height:100%;
+object-fit:cover;
 }
 
-#aiPanel {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  width: 300px;
-  padding: 20px;
-  background: rgba(0,0,0,0.6);
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
+#menu{
+position:absolute;
+left:0;
+top:0;
+width:260px;
+height:100%;
+background:rgba(0,0,0,0.6);
+padding:20px;
+backdrop-filter:blur(10px);
 }
 
-.fadeOut {
-  opacity: 0;
-  pointer-events: none;
+#chat{
+position:absolute;
+right:0;
+top:0;
+width:300px;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:flex;
+flex-direction:column;
+}
+
+#chatMessages{
+flex:1;
+overflow:auto;
+padding:10px;
+}
+
+#chatInput{
+display:flex;
+}
+
+#chatInput input{
+flex:1;
 }
 
 </style>
@@ -99,99 +117,114 @@ video, canvas {
 
 <body>
 
-<div id="menuScreen" class="centerScreen">
+<div id="start" class="center">
 
 <h1>AI Performance Coach</h1>
 
-<div id="step1">
-<h2>Select training form</h2>
+<input id="name" placeholder="Your name">
+<input id="age" placeholder="Age">
 
-<button onclick="selectForm('K-pop')">K-pop</button>
-<button onclick="selectForm('Hip-hop')">Hip-hop</button>
-<button onclick="selectForm('Bharatanatyam')">Bharatanatyam</button>
-<button onclick="selectForm('Vocals')">Vocals</button>
+<textarea id="goal"
+placeholder="Describe your goal (ex: become a K-pop trainee main dancer)"></textarea>
 
-</div>
-
-<div id="step2" style="display:none;">
-
-<h2>Select your goal</h2>
-
-<button onclick="selectGoal('Beginner')">Beginner</button>
-<button onclick="selectGoal('Technique')">Technique</button>
-<button onclick="selectGoal('Audition')">Audition</button>
-
-</div>
-
-<div id="step3" style="display:none;">
-
-<h2>Ready</h2>
-
-<button onclick="enterTraining()">ENTER TRAINING</button>
-
-</div>
+<button onclick="startApp()">ENTER TRAINING</button>
 
 </div>
 
 
-<div id="trainingScreen">
+<div id="training">
 
 <video id="video" autoplay muted></video>
 <canvas id="canvas"></canvas>
 
-<div id="aiPanel">
+<div id="menu">
 
-<h3>AI Coach</h3>
+<h3>Training Menu</h3>
 
-<div id="status">
-Observing movement...
+<button onclick="toggleSkeleton()">Skeleton Overlay</button>
+
+<br><br>
+
+<label>Upload Music</label>
+<input type="file" id="music" accept="audio/*">
+
+<br><br>
+
+<button onclick="playMusic()">Play Music</button>
+
+</div>
+
+
+<div id="chat">
+
+<div id="chatMessages">
+AI Coach: Start moving so I can analyze your training.
+</div>
+
+<div id="chatInput">
+
+<input id="userMessage" placeholder="Ask coach...">
+
+<button onclick="sendMessage()">Send</button>
+
 </div>
 
 </div>
 
 </div>
 
-let sessionStartTime = Date.now();\
-  
+
 <script>
 
-let selectedForm = "";
-let selectedGoal = "";
+let showSkeleton=false
+let audio=new Audio()
 
-function selectForm(form) {
+function startApp(){
 
-selectedForm = form;
+let name=document.getElementById("name").value
+let age=document.getElementById("age").value
+let goal=document.getElementById("goal").value
 
-document.getElementById("step1").style.display = "none";
-document.getElementById("step2").style.display = "block";
+localStorage.setItem("name",name)
+localStorage.setItem("age",age)
+localStorage.setItem("goal",goal)
+
+document.getElementById("start").style.display="none"
+document.getElementById("training").style.display="block"
+
+startCamera()
+startPose()
 
 }
 
-function selectGoal(goal) {
 
-selectedGoal = goal;
+function toggleSkeleton(){
+showSkeleton=!showSkeleton
+}
 
-document.getElementById("step2").style.display = "none";
-document.getElementById("step3").style.display = "block";
+function playMusic(){
+
+let file=document.getElementById("music").files[0]
+
+if(file){
+audio.src=URL.createObjectURL(file)
+audio.play()
+}
 
 }
 
-function enterTraining(){
 
-localStorage.setItem("form", selectedForm);
-localStorage.setItem("goal", selectedGoal);
+function sendMessage(){
 
-document.getElementById("menuScreen").classList.add("fadeOut");
+let msg=document.getElementById("userMessage").value
 
-setTimeout(() => {
+let chat=document.getElementById("chatMessages")
 
-document.getElementById("menuScreen").style.display = "none";
-document.getElementById("trainingScreen").style.display = "block";
+chat.innerHTML+="<br>You: "+msg
 
-startCamera();
-startPose();
+chat.innerHTML+="<br>AI Coach: Good question. Keep training and focus on control."
 
-},500);
+document.getElementById("userMessage").value=""
 
 }
 
@@ -199,526 +232,73 @@ startPose();
 function startCamera(){
 
 navigator.mediaDevices.getUserMedia({video:true})
-
-.then(stream => {
-
-video.srcObject = stream;
-
+.then(stream=>{
+video.srcObject=stream
 })
 
-.catch(() => {
-
-alert("Camera access required");
-
-});
-
 }
-
 
 
 function startPose(){
 
-const canvasElement = document.getElementById('canvas');
-const canvasCtx = canvasElement.getContext('2d');
+const canvasElement=document.getElementById("canvas")
+const canvasCtx=canvasElement.getContext("2d")
 
-const pose = new Pose({
-
-locateFile: file =>
-`https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
-
-});
+const pose=new Pose({
+locateFile:file=>`https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
+})
 
 pose.setOptions({
-
 modelComplexity:1,
 smoothLandmarks:true,
 minDetectionConfidence:0.5,
 minTrackingConfidence:0.5
+})
 
-});
+pose.onResults(results=>{
 
+canvasElement.width=video.videoWidth
+canvasElement.height=video.videoHeight
 
-pose.onResults(results => {
-let sessionLength = Math.floor((Date.now() - sessionStartTime)/1000);
+canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height)
 
-localStorage.setItem("lastSessionLength", sessionLength);
-canvasElement.width = video.videoWidth;
-canvasElement.height = video.videoHeight;
-
-canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
-
-canvasCtx.drawImage(results.image,0,0,
-canvasElement.width,canvasElement.height);
-if (results.poseLandmarks) {
-
-  drawConnectors(
-    canvasCtx,
-    results.poseLandmarks,
-    POSE_CONNECTIONS,
-    {color: '#00FFCC', lineWidth: 4}
-  );
-
-  drawLandmarks(
-    canvasCtx,
-    results.poseLandmarks,
-    {color: '#FF0000', lineWidth: 2}
-  );
-let leftShoulder = results.poseLandmarks[11];
-let rightShoulder = results.poseLandmarks[12];
-
-let shoulderTilt = Math.abs(leftShoulder.y - rightShoulder.y);
-
-if (shoulderTilt > 0.05) {
-
-  document.getElementById("status").innerHTML =
-  "Try keeping your shoulders level.";
-
-} else {
-
-  document.getElementById("status").innerHTML =
-  "Good posture. Keep training.";
-
-}
-}
-
-// Detect movement level
+canvasCtx.drawImage(results.image,0,0,canvasElement.width,canvasElement.height)
 
 if(results.poseLandmarks){
 
-let leftWrist = results.poseLandmarks[15];
-let rightWrist = results.poseLandmarks[16];
+if(showSkeleton){
 
-let movementScore =
-Math.abs(leftWrist.x - rightWrist.x) +
-Math.abs(leftWrist.y - rightWrist.y);
+drawConnectors(canvasCtx,results.poseLandmarks,POSE_CONNECTIONS,
+{color:"#00FFFF",lineWidth:4})
 
-if(movementScore > 0.2){
+drawLandmarks(canvasCtx,results.poseLandmarks,
+{color:"#FF2D55",lineWidth:2})
 
-document.getElementById("status").innerHTML =
-"Good, you're moving. Keep going.";
+}
 
-}else{
+let leftShoulder=results.poseLandmarks[11]
+let rightShoulder=results.poseLandmarks[12]
 
-document.getElementById("status").innerHTML =
-"Move more so I can analyze your technique.";
+let tilt=Math.abs(leftShoulder.y-rightShoulder.y)
+
+if(tilt>0.05){
+
+document.getElementById("chatMessages").innerHTML=
+"AI Coach: Keep your shoulders level."
 
 }
 
 }
 
-});pose.onResults(results => {
+})
 
-canvasElement.width = video.videoWidth;
-canvasElement.height = video.videoHeight;
-
-canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
-
-canvasCtx.drawImage(results.image,0,0,
-canvasElement.width,canvasElement.height);
-
-
-// Detect movement level
-
-if(results.poseLandmarks){
-
-let leftWrist = results.poseLandmarks[15];
-let rightWrist = results.poseLandmarks[16];
-
-let movementScore =
-Math.abs(leftWrist.x - rightWrist.x) +
-Math.abs(leftWrist.y - rightWrist.y);
-
-if(movementScore > 0.2){
-
-document.getElementById("status").innerHTML =
-"Good, you're moving. Keep going.";
-
-}else{
-
-document.getElementById("status").innerHTML =
-"Move more so I can analyze your technique.";
-
-}
-
-}
-
-});pose.onResults(results => {
-
-canvasElement.width = video.videoWidth;
-canvasElement.height = video.videoHeight;
-
-canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
-
-canvasCtx.drawImage(results.image,0,0,
-canvasElement.width,canvasElement.height);
-
-
-// Detect movement level
-
-if(results.poseLandmarks){
-
-let leftWrist = results.poseLandmarks[15];
-let rightWrist = results.poseLandmarks[16];
-
-let movementScore =
-Math.abs(leftWrist.x - rightWrist.x) +
-Math.abs(leftWrist.y - rightWrist.y);
-
-if(movementScore > 0.2){
-
-document.getElementById("status").innerHTML =
-"Good, you're moving. Keep going.";
-
-}else{
-
-document.getElementById("status").innerHTML =
-"Move more so I can analyze your technique.";
-
-}
-
-}
-
-});pose.onResults(results => {
-
-canvasElement.width = video.videoWidth;
-canvasElement.height = video.videoHeight;
-
-canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
-
-canvasCtx.drawImage(results.image,0,0,
-canvasElement.width,canvasElement.height);
-
-
-// Detect movement level
-
-if(results.poseLandmarks){
-
-let leftWrist = results.poseLandmarks[15];
-let rightWrist = results.poseLandmarks[16];
-
-let movementScore =
-Math.abs(leftWrist.x - rightWrist.x) +
-Math.abs(leftWrist.y - rightWrist.y);
-
-if(movementScore > 0.2){
-
-document.getElementById("status").innerHTML =
-"Good, you're moving. Keep going.";
-
-}else{
-
-document.getElementById("status").innerHTML =
-"Move more so I can analyze your technique.";
-
-}
-
-}
-
-});pose.onResults(results => {
-
-canvasElement.width = video.videoWidth;
-canvasElement.height = video.videoHeight;
-
-canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
-
-canvasCtx.drawImage(results.image,0,0,
-canvasElement.width,canvasElement.height);
-
-
-// Detect movement level
-
-if(results.poseLandmarks){
-
-let leftWrist = results.poseLandmarks[15];
-let rightWrist = results.poseLandmarks[16];
-
-let movementScore =
-Math.abs(leftWrist.x - rightWrist.x) +
-Math.abs(leftWrist.y - rightWrist.y);
-
-if(movementScore > 0.2){
-
-document.getElementById("status").innerHTML =
-"Good, you're moving. Keep going.";
-
-}else{
-
-document.getElementById("status").innerHTML =
-"Move more so I can analyze your technique.";
-
-}
-
-}
-
-});pose.onResults(results => {
-
-canvasElement.width = video.videoWidth;
-canvasElement.height = video.videoHeight;
-
-canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
-
-canvasCtx.drawImage(results.image,0,0,
-canvasElement.width,canvasElement.height);
-
-
-// Detect movement level
-
-if(results.poseLandmarks){
-
-let leftWrist = results.poseLandmarks[15];
-let rightWrist = results.poseLandmarks[16];
-
-let movementScore =
-Math.abs(leftWrist.x - rightWrist.x) +
-Math.abs(leftWrist.y - rightWrist.y);
-
-if(movementScore > 0.2){
-
-document.getElementById("status").innerHTML =
-"Good, you're moving. Keep going.";
-
-}else{
-
-document.getElementById("status").innerHTML =
-"Move more so I can analyze your technique.";
-
-}
-
-}
-
-});pose.onResults(results => {
-
-canvasElement.width = video.videoWidth;
-canvasElement.height = video.videoHeight;
-
-canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
-
-canvasCtx.drawImage(results.image,0,0,
-canvasElement.width,canvasElement.height);
-
-
-// Detect movement level
-
-if(results.poseLandmarks){
-
-let leftWrist = results.poseLandmarks[15];
-let rightWrist = results.poseLandmarks[16];
-
-let movementScore =
-Math.abs(leftWrist.x - rightWrist.x) +
-Math.abs(leftWrist.y - rightWrist.y);
-
-if(movementScore > 0.2){
-
-document.getElementById("status").innerHTML =
-"Good, you're moving. Keep going.";
-
-}else{
-
-document.getElementById("status").innerHTML =
-"Move more so I can analyze your technique.";
-
-}
-
-}
-
-});pose.onResults(results => {
-
-canvasElement.width = video.videoWidth;
-canvasElement.height = video.videoHeight;
-
-canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
-
-canvasCtx.drawImage(results.image,0,0,
-canvasElement.width,canvasElement.height);
-
-
-// Detect movement level
-
-if(results.poseLandmarks){
-
-let leftWrist = results.poseLandmarks[15];
-let rightWrist = results.poseLandmarks[16];
-
-let movementScore =
-Math.abs(leftWrist.x - rightWrist.x) +
-Math.abs(leftWrist.y - rightWrist.y);
-
-if(movementScore > 0.2){
-
-document.getElementById("status").innerHTML =
-"Good, you're moving. Keep going.";
-
-}else{
-
-document.getElementById("status").innerHTML =
-"Move more so I can analyze your technique.";
-
-}
-
-}
-
-});pose.onResults(results => {
-
-canvasElement.width = video.videoWidth;
-canvasElement.height = video.videoHeight;
-
-canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
-
-canvasCtx.drawImage(results.image,0,0,
-canvasElement.width,canvasElement.height);
-
-
-// Detect movement level
-
-if(results.poseLandmarks){
-
-let leftWrist = results.poseLandmarks[15];
-let rightWrist = results.poseLandmarks[16];
-
-let movementScore =
-Math.abs(leftWrist.x - rightWrist.x) +
-Math.abs(leftWrist.y - rightWrist.y);
-
-if(movementScore > 0.2){
-
-document.getElementById("status").innerHTML =
-"Good, you're moving. Keep going.";
-
-}else{
-
-document.getElementById("status").innerHTML =
-"Move more so I can analyze your technique.";
-
-}
-
-}
-
-});pose.onResults(results => {
-
-canvasElement.width = video.videoWidth;
-canvasElement.height = video.videoHeight;
-
-canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
-
-canvasCtx.drawImage(results.image,0,0,
-canvasElement.width,canvasElement.height);
-
-
-// Detect movement level
-
-if(results.poseLandmarks){
-
-let leftWrist = results.poseLandmarks[15];
-let rightWrist = results.poseLandmarks[16];
-
-let movementScore =
-Math.abs(leftWrist.x - rightWrist.x) +
-Math.abs(leftWrist.y - rightWrist.y);
-
-if(movementScore > 0.2){
-
-document.getElementById("status").innerHTML =
-"Good, you're moving. Keep going.";
-
-}else{
-
-document.getElementById("status").innerHTML =
-"Move more so I can analyze your technique.";
-
-}
-
-}
-
-});pose.onResults(results => {
-
-canvasElement.width = video.videoWidth;
-canvasElement.height = video.videoHeight;
-
-canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
-
-canvasCtx.drawImage(results.image,0,0,
-canvasElement.width,canvasElement.height);
-
-
-// Detect movement level
-
-if(results.poseLandmarks){
-
-let leftWrist = results.poseLandmarks[15];
-let rightWrist = results.poseLandmarks[16];
-
-let movementScore =
-Math.abs(leftWrist.x - rightWrist.x) +
-Math.abs(leftWrist.y - rightWrist.y);
-
-if(movementScore > 0.2){
-
-document.getElementById("status").innerHTML =
-"Good, you're moving. Keep going.";
-
-}else{
-
-document.getElementById("status").innerHTML =
-"Move more so I can analyze your technique.";
-
-}
-
-}
-
-});pose.onResults(results => {
-
-canvasElement.width = video.videoWidth;
-canvasElement.height = video.videoHeight;
-
-canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
-
-canvasCtx.drawImage(results.image,0,0,
-canvasElement.width,canvasElement.height);
-
-
-// Detect movement level
-
-if(results.poseLandmarks){
-
-let leftWrist = results.poseLandmarks[15];
-let rightWrist = results.poseLandmarks[16];
-
-let movementScore =
-Math.abs(leftWrist.x - rightWrist.x) +
-Math.abs(leftWrist.y - rightWrist.y);
-
-if(movementScore > 0.2){
-
-document.getElementById("status").innerHTML =
-"Good, you're moving. Keep going.";
-
-}else{
-
-document.getElementById("status").innerHTML =
-"Move more so I can analyze your technique.";
-
-}
-
-}
-
-});
-
-
-const camera = new Camera(video,{
-
-onFrame: async ()=>{
-
-await pose.send({image:video});
-
-},
-
+const camera=new Camera(video,{
+onFrame:async()=>{await pose.send({image:video})},
 width:1280,
 height:720
+})
 
-});
-
-camera.start();
+camera.start()
 
 }
 
